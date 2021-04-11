@@ -28,6 +28,13 @@ double von_mises_fisher(double mu_o, double mu_i, double phi_d, double kappa) {
     return scale * std::exp(kappa * cos_theta);
 }
 
+double lambert_sphere(double mu_o, double mu_i, double phi_d) {
+    double cos_theta = mu_i * mu_o + std::cos(phi_d) *
+                       std::sqrt((1 - mu_i*mu_i) * (1 - mu_o*mu_o));
+
+    return 0.06754745576155852 * (safe_sqrt(1.0 - cos_theta * cos_theta) - 1.0 * cos_theta * acos(cos_theta));
+}
+
 void henyey_greenstein_fourier_series(double mu_o, double mu_i, double g, int md,
                                       double relerr, VectorX &result) {
     if (g == 0) {
@@ -107,6 +114,21 @@ void von_mises_fisher_fourier_series(double mu_o, double mu_i, double kappa,
 
     VectorXc temp_result = exp_cos_fourier_series(A, B, 0, relerr);
     result = temp_result.real();
+}
+
+void lambert_sphere_fourier_series(double mu_o, double mu_i, int md,
+                                     double relerr, VectorX &result) {
+    result.resize(5);
+
+    const double f0 = (207 - 256*mu_i*mu_o - 45*mu_o * mu_o + 45*mu_i * mu_i*(-1 + 3*mu_o * mu_o))/(768.*math::Pi<double>);
+    const double f1 = ((-64 + 45*mu_i*mu_o)*safe_sqrt((-1 + mu_i * mu_i)*(-1 + mu_o * mu_o)))/(192.*math::Pi<double>);
+    const double f2 = (15*(-1 + mu_i * mu_i)*(-1 + mu_o * mu_o))/(256.*math::Pi<double>);
+
+    result[0] = 0.0;
+    result[1] = 0.0;
+    result[2] = f0;
+    result[3] = 0.5 * f1;
+    result[4] = 0.5 * f2;
 }
 
 NAMESPACE_END(mitsuba)

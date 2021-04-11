@@ -103,4 +103,36 @@ extern MTS_EXPORT_LAYER double von_mises_fisher(double mu_o, double mu_i, double
 extern MTS_EXPORT_LAYER void von_mises_fisher_fourier_series(double mu_o, double mu_i, double kappa,
                                                              double relerr, VectorX &result);
 
+/**
+ * \brief Evaluate the Lambert-sphere model using the mu_i, mu_o, phi_d parameterization
+ *
+ * \param mu_o
+ *    Exitant zenith angle cosine
+ *
+ * \param mu_i
+ *    Incident zenith angle cosine
+ *
+ * \param phi_d
+ *    Azimuthal difference angle
+ */
+extern MTS_EXPORT_LAYER double lambert_sphere(double mu_o, double mu_i, double phi_d);
+
+/**
+ * \brief Compute a Fourier series of the Lambert sphere model
+ *
+ * \param mu_o
+ *    Exitant zenith angle cosine
+ *
+ * \param mu_i
+ *    Incident zenith angle cosine
+ *
+ * \param relerr
+ *    Relative error goal
+ *
+ * \param result
+ *    Storage for the generated Fourier coefficients
+ */
+extern MTS_EXPORT_LAYER void lambert_sphere_fourier_series(double mu_o, double mu_i, int md,
+                                                             double relerr, VectorX &result);
+
 NAMESPACE_END(mitsuba)

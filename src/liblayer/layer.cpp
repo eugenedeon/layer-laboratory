@@ -310,6 +310,40 @@ void Layer::set_von_mises_fisher(double albedo, double kappa) {
     apply_medium_integration_weights(*this);
 }
 
+void Layer::set_lambert_sphere(double albedo) {
+    std::vector<Quintet> quintets;
+    tbb::spin_mutex mutex;
+
+    tbb::parallel_for(
+        tbb::blocked_range<size_t>(0, resolution()),
+        [&](const tbb::blocked_range<size_t> &range) {
+            std::vector<Quintet> local_quintets;
+            local_quintets.reserve(fourier_orders().second * resolution());
+
+            VectorX result;
+            for (size_t i = range.begin(); i < range.end(); ++i) {
+                for (size_t o = 0; o <= i; ++o) {
+                    lambert_sphere_fourier_series(m_nodes[o], m_nodes[i], 
+                                                     (int) fourier_orders().second, ERROR_GOAL, result);
+
+                    int mdh = result.size() / 2;
+                    for (int d = -mdh; d <= mdh; ++d) {
+                        local_quintets.emplace_back(0, d, o, i, result[d + mdh] * albedo);
+                        if (i != o) {
+                            local_quintets.emplace_back(0, d, i, o, result[d + mdh] * albedo);
+                        }
+                    }
+                }
+                tbb::spin_mutex::scoped_lock lock(mutex);
+                quintets.insert(quintets.end(), local_quintets.begin(), local_quintets.end());
+            }
+        }
+    );
+
+    set_quintets(quintets);
+    apply_medium_integration_weights(*this);
+}
+
 void Layer::set_fourier_coeffs(std::vector<MatrixX> coeffs) {
     std::vector<Quintet> quintets;
     tbb::spin_mutex mutex;

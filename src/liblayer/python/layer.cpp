@@ -21,6 +21,8 @@ MTS_PY_EXPORT(Layer) {
              "albedo"_a, "g"_a)
         .def("set_von_mises_fisher", &Layer::set_von_mises_fisher, D(Layer, set_von_mises_fisher),
              "albedo"_a, "kappa"_a)
+        .def("set_lambert_sphere", &Layer::set_lambert_sphere, D(Layer, set_lambert_sphere),
+             "albedo"_a)
         .def("set_fourier_coeffs", &Layer::set_fourier_coeffs, D(Layer, set_fourier_coeffs),
              "coeffs"_a)
 

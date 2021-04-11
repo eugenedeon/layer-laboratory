@@ -3355,6 +3355,12 @@ Parameter ``albedo``:
 Parameter ``g``:
     The layer's HG "anisotropy" parameter (in ``[-1, 1]``))doc";
 
+static const char *__doc_mitsuba_Layer_set_lambert_sphere =
+R"doc(Initialize the layer with a Lambert-sphere phase function
+
+Parameter ``albedo``:
+    The layer's single scattering albedo reflectance (in ``[0, 1]``))doc";
+
 static const char *__doc_mitsuba_Layer_set_isotropic =
 R"doc(Initialize the layer with an isotropic phase function
 

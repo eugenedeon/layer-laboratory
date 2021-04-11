@@ -126,6 +126,14 @@ public:
      */
     void set_von_mises_fisher(double albedo, double kappa);
 
+    /**
+     * \brief Initialize the layer with a Lambert sphere phase function
+     *
+     * \param albedo
+     *    The layer's single scattering albedo reflectance (in <tt>[0, 1]</tt>)
+     */
+    void set_lambert_sphere(double albedo);
+
      /**
      * \brief Initialize the layer with explicit Fourier series coefficients
      * for all pairs of elevation angles.
