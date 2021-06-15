@@ -120,12 +120,13 @@ void lambert_sphere_fourier_series(double mu_o, double mu_i, int md,
                                      double relerr, VectorX &result) {
     result.resize(5);
 
+    // [d'Eon 2021 - EGSR - Eqs.(10) - (12)]
     const double f0 = (207 - 256*mu_i*mu_o - 45*mu_o * mu_o + 45*mu_i * mu_i*(-1 + 3*mu_o * mu_o))/(768.*math::Pi<double>);
     const double f1 = ((-64 + 45*mu_i*mu_o)*safe_sqrt((-1 + mu_i * mu_i)*(-1 + mu_o * mu_o)))/(192.*math::Pi<double>);
     const double f2 = (15*(-1 + mu_i * mu_i)*(-1 + mu_o * mu_o))/(256.*math::Pi<double>);
 
-    result[0] = 0.0;
-    result[1] = 0.0;
+    result[0] = 0.5 * f2;
+    result[1] = 0.5 * f1;
     result[2] = f0;
     result[3] = 0.5 * f1;
     result[4] = 0.5 * f2;
