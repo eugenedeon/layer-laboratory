@@ -28,6 +28,7 @@ double von_mises_fisher(double mu_o, double mu_i, double phi_d, double kappa) {
     return scale * std::exp(kappa * cos_theta);
 }
 
+// Lambertian sphere phase function [Lambert 1970, Blinn 1982, d'Eon 2021]
 double lambert_sphere(double mu_o, double mu_i, double phi_d) {
     double cos_theta = mu_i * mu_o + std::cos(phi_d) *
                        std::sqrt((1 - mu_i*mu_i) * (1 - mu_o*mu_o));
